@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}"> <!-- On utilise le design global -->
+
+<head>
+    <title>Poseidon - Courbes de taux</title>
+</head>
+<body>
+
+<!-- On injecte ce bloc dans le fragment 'content' du layout -->
+<div layout:fragment="content">
+    <!-- MESSAGE DE MAINTENANCE (S'affiche uniquement en cas de panne) -->
+    <div th:if="${errorMsg}" class="alert alert-danger shadow-sm mt-3" role="alert">
+        <i class="fas fa-tools"></i> <span th:text="${errorMsg}">Message d'erreur</span>
+    </div>
+
+
+    <div class="row mt-4 mb-3">
+        <div class="col-6">
+            <h2>Liste des Points de Courbe (CurvePoint)</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a th:href="@{/curvePoint/add}" class="btn btn-primary btn-sm">Ajouter un point</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Curve Id</th>
+            <th>Term</th>
+            <th>Value</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- On boucle sur 'curvePoints' (pluriel) envoyé par ton Controller -->
+        <tr th:each="cp : ${curvePoints}">
+            <td th:text="${cp.id}"></td>
+            <td th:text="${cp.curveId}"></td>
+            <td th:text="${cp.term}"></td>
+            <td th:text="${cp.value}"></td>
+            <td class="text-center">
+                <a th:href="@{/curvePoint/update/{id}(id=${cp.id})}" class="btn btn-info btn-sm">Modifier</a>
+                <a th:href="@{/curvePoint/delete/{id}(id=${cp.id})}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

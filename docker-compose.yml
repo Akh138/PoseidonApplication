@@ -1,0 +1,145 @@
+services:
+  configserver:
+    image: "akh138/poseidon-configserver:v1"
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: ["CMD-SHELL", "java -version || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - poseidon-network
+
+  bidlist:
+    image: "akh138/bidlist:v1"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  curvepoint:
+    image: "akh138/curvepoint:v1"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  rating:
+    image: "akh138/rating:v1"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  rulename:
+    image: "akh138/rulename:v1"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  trade:
+    image: "akh138/trade:v1"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  user:
+    image: "akh138/user:v1"
+    ports:
+      - "8086:8086"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  # --- PORTAIL UI ICI ---
+  poseidon-ui:
+    image: "akh138/poseidon-ui:v1"
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  consul:
+    image: hashicorp/consul:1.15
+    ports:
+      - "8500:8500" # C'est le port de l'interface visuelle de consul
+    command: "agent -dev -client 0.0.0.0"
+    networks:
+      - poseidon-network
+
+
+  gateway:
+    image: "akh138/gateway:v1"
+    ports:
+      - "9090:9090"
+    depends_on:
+      configserver:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+    restart: on-failure
+    networks:
+      - poseidon-network
+
+  poseidon-db:
+    image: mysql:8.0
+    container_name: poseidon-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=poseidon_db
+    ports:
+      - "3306:3306"
+    # AJOUTE CES DEUX LIGNES :
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - poseidon-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 10
+networks:
+  poseidon-network:
+    driver: bridge

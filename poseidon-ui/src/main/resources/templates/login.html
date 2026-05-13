@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Poseidon - Connexion</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        .login-container { max-width: 400px; margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+<div class="container login-container">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white text-center">
+            <h3>Connexion</h3>
+        </div>
+        <div class="card-body">
+
+            <!-- Message d'erreur si le login rate -->
+            <div th:if="${param.error}" class="alert alert-danger">
+                Identifiants incorrects.
+            </div>
+
+            <!-- Message de succès après inscription -->
+            <div th:if="${param.success}" class="alert alert-success">
+                Inscription réussie ! Connectez-vous.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Utilisateur</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <p>Nouveau ici ? <a th:href="@{/register}">Créer un compte</a></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

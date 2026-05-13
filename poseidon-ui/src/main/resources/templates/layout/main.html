@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Poseidon Application</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { padding-top: 70px; background-color: #f4f7f6; }
+        .navbar { border-bottom: 3px solid #007bff; }
+        footer { background: #343a40; color: white; padding: 20px 0; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+<!-- ON APPELLE LE MENU DEPUIS LE HEADER -->
+<header th:replace="~{common/header :: menu}"></header>
+
+<main class="container">
+    <!-- C'EST ICI QUE LE CONTENU DES AUTRES PAGES VA S'INJECTER -->
+    <div layout:fragment="content"></div>
+</main>
+
+<footer class="footer mt-auto py-3">
+    <div class="container text-center">
+        <span>© 2026 Poseidon Trading Platform - Architecture Microservices & Docker</span>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Poseidon - Transactions</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div th:if="${errorMsg}" class="alert alert-danger shadow-sm mt-3" role="alert">
+        <i class="fas fa-tools"></i> <span th:text="${errorMsg}">Message d'erreur</span>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col-6">
+            <h2>Liste des Transactions (Trade)</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a th:href="@{/trade/add}" class="btn btn-primary btn-sm">Enregistrer un Trade</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Compte</th>
+            <th>Type</th>
+            <th>Quantité d'achat</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- On boucle sur 'trades' (pluriel) -->
+        <tr th:each="trade : ${trades}">
+            <!-- Note : On utilise bien tradeId comme dans ta classe Trade.java -->
+            <td th:text="${trade.tradeId}"></td>
+            <td th:text="${trade.account}"></td>
+            <td th:text="${trade.type}"></td>
+            <td th:text="${trade.buyQuantity}"></td>
+            <td class="text-center">
+                <a th:href="@{/trade/update/{id}(id=${trade.tradeId})}" class="btn btn-info btn-sm">Modifier</a>
+                <a th:href="@{/trade/delete/{id}(id=${trade.tradeId})}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

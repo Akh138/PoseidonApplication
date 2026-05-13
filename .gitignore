@@ -1,0 +1,14 @@
+# Dossiers de compilation Maven
+**/target/
+*.class
+
+# Dossier de données MySQL (C'est lui qui bloquait)
+mysql_data/
+
+# Fichiers de configuration IntelliJ
+.idea/
+*.iml
+
+# Fichiers système
+.DS_Store
+Thumbs.db

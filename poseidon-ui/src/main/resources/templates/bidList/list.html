@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}"> <!-- CETTE LIGNE DIT D'UTILISER LE DESIGN GLOBAL -->
+
+<head>
+    <title>Poseidon - Marché</title>
+</head>
+<body>
+
+<!-- TOUT CE QUI EST ICI SERA INJECTÉ DANS LE LAYOUT -->
+<div layout:fragment="content">
+    <!-- MESSAGE DE MAINTENANCE (S'affiche uniquement en cas de panne) -->
+    <div th:if="${errorMsg}" class="alert alert-danger shadow-sm mt-3" role="alert">
+        <i class="fas fa-tools"></i> <span th:text="${errorMsg}">Message d'erreur</span>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col-6">
+            <h2>Liste des Offres (BidList)</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a th:href="@{/bidList/add}" class="btn btn-primary btn-sm">Ajouter une offre</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Compte</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bid : ${bidLists}">
+            <td th:text="${bid.bidListId}"></td>
+            <td th:text="${bid.account}"></td>
+            <td th:text="${bid.type}"></td>
+            <td th:text="${bid.bidQuantity}"></td>
+            <td class="text-center">
+                <a th:href="@{/bidList/update/{id}(id=${bid.bidListId})}" class="btn btn-info btn-sm">Modifier</a>
+                <a th:href="@{/bidList/delete/{id}(id=${bid.bidListId})}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

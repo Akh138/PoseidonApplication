@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Poseidon - Modifier l'offre</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-info">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Modifier l'offre n° <span th:text="${bidList.bidListId}"></span></h3>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/bidList/update/{id}(id=${bidList.bidListId})}" th:object="${bidList}" method="post" novalidate>
+
+                        <input type="hidden" th:field="*{bidListId}">
+
+                        <div class="mb-3">
+                            <label for="account" class="form-label font-weight-bold">Compte</label>
+                            <input type="text" th:field="*{account}" id="account" class="form-control" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="type" class="form-label font-weight-bold">Type</label>
+                            <input type="text" th:field="*{type}" id="type" class="form-control" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="bidQuantity" class="form-label font-weight-bold">Quantité</label>
+                            <input type="number" step="0.01" th:field="*{bidQuantity}" id="bidQuantity" class="form-control"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('bidQuantity')}" th:errors="*{bidQuantity}"></p>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Valider les modifications</button>
+                            <a th:href="@{/bidList/list}" class="btn btn-outline-danger">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

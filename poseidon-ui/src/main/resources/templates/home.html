@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Poseidon - Dashboard</title>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            padding: 60px 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .feature-card {
+            transition: transform 0.3s;
+            cursor: pointer;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <!-- SECTION HERO -->
+    <div class="hero-section text-center shadow">
+        <h1 class="display-3">🔱 POSEIDON TRADING</h1>
+        <p class="lead">Plateforme de Gestion des Risques et des Transactions Financières</p>
+        <hr class="my-4 bg-white" style="width: 200px;">
+        <div class="badge bg-light text-dark p-2">Architecture Microservices</div>
+        <div class="badge bg-light text-dark p-2">Spring Boot 3</div>
+        <div class="badge bg-light text-dark p-2">Docker & Compose</div>
+        <div class="badge bg-light text-dark p-2">Service Discovery (Consul)</div>
+        <div class="badge bg-light text-dark p-2">API Gateway</div>
+    </div>
+
+    <!-- GRILLE DES MODULES -->
+    <div class="row g-4 text-center">
+
+        <!-- Bid List -->
+        <div class="col-md-4">
+            <div class="card feature-card shadow-sm" onclick="location.href='/bidList/list'">
+                <div class="card-body">
+                    <div class="icon-circle mx-auto text-primary"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h5 class="card-title">Marché (Bids)</h5>
+                    <p class="card-text text-muted">Gérez les offres d'achat et de vente sur les marchés financiers.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Curve Points -->
+        <div class="col-md-4">
+            <div class="card feature-card shadow-sm" onclick="location.href='/curvePoint/list'">
+                <div class="card-body">
+                    <div class="icon-circle mx-auto text-success"><i class="fas fa-chart-line"></i></div>
+                    <h5 class="card-title">Courbes de Taux</h5>
+                    <p class="card-text text-muted">Analysez les points de données pour les projections financières.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade -->
+        <div class="col-md-4">
+            <div class="card feature-card shadow-sm" onclick="location.href='/trade/list'">
+                <div class="card-body">
+                    <div class="icon-circle mx-auto text-warning"><i class="fas fa-exchange-alt"></i></div>
+                    <h5 class="card-title">Transactions</h5>
+                    <p class="card-text text-muted">Historique complet des trades et exécutions réelles.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ratings -->
+        <div class="col-md-4">
+            <div class="card feature-card shadow-sm" onclick="location.href='/rating/list'">
+                <div class="card-body">
+                    <div class="icon-circle mx-auto text-danger"><i class="fas fa-star"></i></div>
+                    <h5 class="card-title">Notations</h5>
+                    <p class="card-text text-muted">Évaluez le risque de crédit via les agences de notation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules -->
+        <div class="col-md-4">
+            <div class="card feature-card shadow-sm" onclick="location.href='/ruleName/list'">
+                <div class="card-body">
+                    <div class="icon-circle mx-auto text-info"><i class="fas fa-gavel"></i></div>
+                    <h5 class="card-title">Règles métier</h5>
+                    <p class="card-text text-muted">Définissez les protocoles et conventions de trading.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users -->
+        <div class="col-md-4">
+            <div class="card feature-card shadow-sm" onclick="location.href='/users/list'">
+                <div class="card-body">
+                    <div class="icon-circle mx-auto text-dark"><i class="fas fa-users-cog"></i></div>
+                    <h5 class="card-title">Administration</h5>
+                    <p class="card-text text-muted">Gestion centralisée des accès et des rôles utilisateurs.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PIED DE PAGE TECHNIQUE -->
+    <div class="alert alert-secondary mt-5 shadow-sm">
+        <h5 class="alert-heading"><i class="fas fa-info-circle"></i> État de l'infrastructure :</h5>
+        <p class="mb-0 small">
+            Toute la configuration est gérée par <strong>Spring Cloud Config</strong> via GitHub.
+            Le routage est assuré par une <strong>API Gateway</strong>.
+            Chaque service est isolé dans un conteneur <strong>Docker</strong>.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

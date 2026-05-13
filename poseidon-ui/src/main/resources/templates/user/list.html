@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Poseidon - Utilisateurs</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div th:if="${errorMsg}" class="alert alert-danger shadow-sm mt-3" role="alert">
+        <i class="fas fa-tools"></i> <span th:text="${errorMsg}">Message d'erreur</span>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col-6">
+            <h2>Gestion des Utilisateurs</h2>
+        </div>
+        <div class="col-6 text-right text-end">
+            <a th:href="@{/users/add}" class="btn btn-primary btn-sm">Nouvel Utilisateur</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Nom Complet</th>
+            <th>Identifiant</th>
+            <th>Rôle</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- On boucle sur 'users' (pluriel défini dans ton UserUiController) -->
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.fullname}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.role}"></td>
+            <td class="text-center">
+                <a th:href="@{/users/update/{id}(id=${user.id})}" class="btn btn-info btn-sm">Modifier</a>
+                <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

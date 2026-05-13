@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Poseidon - Modifier le point de courbe</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-info">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Modifier le point n° <span th:text="${curvePoint.id}"></span></h3>
+                </div>
+                <div class="card-body p-4">
+                    <!-- AJOUT de novalidate pour laisser Java gérer les messages d'erreurs -->
+                    <form th:action="@{/curvePoint/update/{id}(id=${curvePoint.id})}" th:object="${curvePoint}" method="post" novalidate>
+
+                        <!-- CHAMP CACHÉ POUR L'ID (CRUCIAL) -->
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="mb-3">
+                            <label for="curveId" class="form-label font-weight-bold">Curve Id</label>
+                            <input type="number" th:field="*{curveId}" id="curveId" class="form-control" />
+                            <!-- AJOUT DU MESSAGE D'ERREUR -->
+                            <p class="text-danger" th:if="${#fields.hasErrors('curveId')}" th:errors="*{curveId}"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="term" class="form-label font-weight-bold">Terme</label>
+                            <input type="number" step="0.01" th:field="*{term}" id="term" class="form-control" />
+                            <!-- AJOUT DU MESSAGE D'ERREUR -->
+                            <p class="text-danger" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="value" class="form-label font-weight-bold">Valeur</label>
+                            <input type="number" step="0.01" th:field="*{value}" id="value" class="form-control" />
+                            <!-- AJOUT DU MESSAGE D'ERREUR -->
+                            <p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Valider les modifications</button>
+                            <a th:href="@{/curvePoint/list}" class="btn btn-outline-danger">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

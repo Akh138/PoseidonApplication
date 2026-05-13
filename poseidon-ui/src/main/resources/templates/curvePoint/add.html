@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Poseidon - Ajouter un point de courbe</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Ajouter un Curve Point</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/curvePoint/validate}" th:object="${curvePoint}" method="post" novalidate>
+
+                        <div class="mb-3">
+                            <label for="curveId" class="form-label font-weight-bold">Curve Id</label>
+                            <input type="number" th:field="*{curveId}" id="curveId" class="form-control" placeholder="Ex: 10">
+                            <p class="text-danger" th:if="${#fields.hasErrors('curveId')}" th:errors="*{curveId}"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="term" class="form-label font-weight-bold">Terme (Term)</label>
+                            <input type="number" step="0.01" th:field="*{term}" id="term" class="form-control" placeholder="0.00">
+                            <p class="text-danger" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="value" class="form-label font-weight-bold">Valeur (Value)</label>
+                            <input type="number" step="0.01" th:field="*{value}" id="value" class="form-control" placeholder="0.00">
+                            <p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Enregistrer le point</button>
+                            <a th:href="@{/curvePoint/list}" class="btn btn-outline-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Poseidon - Notations</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <!-- MESSAGE DE MAINTENANCE (S'affiche uniquement en cas de panne) -->
+    <div th:if="${errorMsg}" class="alert alert-danger shadow-sm mt-3" role="alert">
+        <i class="fas fa-tools"></i> <span th:text="${errorMsg}">Message d'erreur</span>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col-6">
+            <h2>Liste des Notations (Rating)</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a th:href="@{/rating/add}" class="btn btn-primary btn-sm">Ajouter une notation</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Moody's</th>
+            <th>S&P</th>
+            <th>Fitch</th>
+            <th>Ordre</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rating : ${ratings}">
+            <td th:text="${rating.id}"></td>
+            <td th:text="${rating.moodysRating}"></td>
+            <td th:text="${rating.sandPRating}"></td>
+            <td th:text="${rating.fitchRating}"></td>
+            <td th:text="${rating.orderNumber}"></td>
+            <td class="text-center">
+                <a th:href="@{/rating/update/{id}(id=${rating.id})}" class="btn btn-info btn-sm">Modifier</a>
+                <a th:href="@{/rating/delete/{id}(id=${rating.id})}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

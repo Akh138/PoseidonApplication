@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Poseidon - Modifier la règle</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-info">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Modifier la règle n° <span th:text="${ruleName.id}"></span></h3>
+                </div>
+                <div class="card-body p-4">
+                    <!-- On ajoute novalidate pour laisser Java gérer les erreurs -->
+                    <form th:action="@{/ruleName/update/{id}(id=${ruleName.id})}" th:object="${ruleName}" method="post" novalidate>
+
+                        <!-- CHAMP CACHÉ POUR L'ID -->
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label font-weight-bold">Nom</label>
+                                <input type="text" th:field="*{name}" id="name" class="form-control" />
+                                <!-- AFFICHAGE ERREUR NOM -->
+                                <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="description" class="form-label font-weight-bold">Description</label>
+                                <input type="text" th:field="*{description}" id="description" class="form-control" />
+                                <!-- AFFICHAGE ERREUR DESCRIPTION -->
+                                <p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="json" class="form-label font-weight-bold">JSON</label>
+                                <input type="text" th:field="*{json}" id="json" class="form-control"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="template" class="form-label font-weight-bold">Template</label>
+                                <input type="text" th:field="*{template}" id="template" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="sqlStr" class="form-label font-weight-bold">SQL String</label>
+                                <input type="text" th:field="*{sqlStr}" id="sqlStr" class="form-control"/>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="sqlPart" class="form-label font-weight-bold">SQL Part</label>
+                                <input type="text" th:field="*{sqlPart}" id="sqlPart" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 border-top pt-3">
+                            <button type="submit" class="btn btn-primary">Valider les modifications</button>
+                            <a th:href="@{/ruleName/list}" class="btn btn-outline-danger">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
