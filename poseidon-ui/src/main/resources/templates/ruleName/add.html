@@ -3,62 +3,125 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Ajouter une règle</title>
+    <title>Poseidon - Définir une Règle</title>
+    <style>
+        .form-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+        .form-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #c084fc !important;
+            box-shadow: 0 0 0 0.25rem rgba(192, 132, 252, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Ajouter une nouvelle règle (Rule)</h3>
+    <div class="form-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+
+                <div class="card form-card shadow-lg">
+                    <!-- En-tête -->
+                    <div class="card-header py-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-scale-balanced fs-4 me-2" style="color: #c084fc;"></i>
+                                <h4 class="mb-0 text-white fw-bold">Définition d'une Règle de Conformité</h4>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(192, 132, 252, 0.2); color: #c084fc; border: 1px solid #c084fc;">
+                            Compliance & Algo
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Configurez les critères de filtrage automatisé pour valider ou interdire les ordres selon les règles de la banque.
+                        </p>
+
+                        <form th:action="@{/ruleName/validate}" th:object="${ruleName}" method="post" novalidate>
+
+                            <!-- LIGNE 1 : NOM & DESCRIPTION -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label text-light fw-semibold small">
+                                        <i class="fa-solid fa-tag text-info me-1"></i> Nom de la Règle
+                                    </label>
+                                    <input type="text" th:field="*{name}" id="name" class="form-control form-control-dark" placeholder="Ex: Plafond Achat 5M€" />
+                                    <p class="text-danger small mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="description" class="form-label text-light fw-semibold small">
+                                        <i class="fa-solid fa-align-left text-warning me-1"></i> Description Fonctionnelle
+                                    </label>
+                                    <input type="text" th:field="*{description}" id="description" class="form-control form-control-dark" placeholder="Ex: Blocage des ordres supérieurs à 5M€ sans accord Risk" />
+                                    <p class="text-danger small mt-1" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+                                </div>
+                            </div>
+
+                            <!-- LIGNE 2 : JSON & TEMPLATE -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="json" class="form-label text-light fw-semibold small">
+                                        <i class="fa-solid fa-code text-success me-1"></i> Configuration JSON
+                                    </label>
+                                    <input type="text" th:field="*{json}" id="json" class="form-control form-control-dark font-monospace" placeholder='Ex: {"maxAmount": 5000000}' />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="template" class="form-label text-light fw-semibold small">
+                                        <i class="fa-solid fa-file-code text-light me-1"></i> Modèle (Template)
+                                    </label>
+                                    <input type="text" th:field="*{template}" id="template" class="form-control form-control-dark" placeholder="Ex: Template_Alerte_MIFID" />
+                                </div>
+                            </div>
+
+                            <!-- LIGNE 3 : SQL STRING & SQL PART -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="sqlStr" class="form-label text-light fw-semibold small">
+                                        <i class="fa-solid fa-database text-primary me-1"></i> Requête SQL Complète
+                                    </label>
+                                    <input type="text" th:field="*{sqlStr}" id="sqlStr" class="form-control form-control-dark font-monospace" placeholder="SELECT * FROM bids WHERE quantity > 5000" />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="sqlPart" class="form-label text-light fw-semibold small">
+                                        <i class="fa-solid fa-filter text-secondary me-1"></i> Fragment SQL (Condition)
+                                    </label>
+                                    <input type="text" th:field="*{sqlPart}" id="sqlPart" class="form-control form-control-dark font-monospace" placeholder="quantity > 5000" />
+                                </div>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="d-grid gap-2 border-top border-secondary pt-3">
+                                <button type="submit" class="btn py-2 fw-semibold text-white shadow-sm" style="background-color: #9333ea; border-color: #9333ea;">
+                                    <i class="fa-solid fa-check me-1"></i> Enregistrer le Protocole
+                                </button>
+                                <a th:href="@{/ruleName/list}" class="btn btn-outline-secondary py-2 text-light">
+                                    <i class="fa-solid fa-xmark me-1"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <!-- novalidate permet de voir tes messages rouges Java -->
-                    <form th:action="@{/ruleName/validate}" th:object="${ruleName}" method="post" novalidate>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label font-weight-bold">Nom</label>
-                                <input type="text" th:field="*{name}" id="name" class="form-control" placeholder="Ex: Rule 1">
-                                <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="description" class="form-label font-weight-bold">Description</label>
-                                <input type="text" th:field="*{description}" id="description" class="form-control" placeholder="Description courte">
-                                <p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="json" class="form-label font-weight-bold">JSON</label>
-                                <input type="text" th:field="*{json}" id="json" class="form-control" placeholder="Format JSON">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="template" class="form-label font-weight-bold">Template</label>
-                                <input type="text" th:field="*{template}" id="template" class="form-control" placeholder="Modèle de règle">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label for="sqlStr" class="form-label font-weight-bold">SQL String</label>
-                                <input type="text" th:field="*{sqlStr}" id="sqlStr" class="form-control" placeholder="Requête SQL">
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="sqlPart" class="form-label font-weight-bold">SQL Part</label>
-                                <input type="text" th:field="*{sqlPart}" id="sqlPart" class="form-control" placeholder="Fragment SQL">
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-2 border-top pt-3">
-                            <button type="submit" class="btn btn-primary">Enregistrer la règle</button>
-                            <a th:href="@{/ruleName/list}" class="btn btn-outline-secondary">Annuler</a>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

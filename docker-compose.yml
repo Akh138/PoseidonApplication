@@ -76,12 +76,13 @@ services:
     image: "akh138/user:v1"
     ports:
       - "8086:8086"
-
     depends_on:
       configserver:
         condition: service_healthy
+      poseidon-db:
+        condition: service_healthy # AJOUTE CECI !
     environment:
-      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://configserver:8071/
     restart: on-failure
     networks:
       - poseidon-network

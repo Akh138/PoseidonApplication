@@ -3,58 +3,124 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Ajouter un utilisateur</title>
+    <title>Poseidon - Créer un Compte Opérateur</title>
+    <style>
+        .form-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+        .form-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Créer un nouvel utilisateur</h3>
-                </div>
-                <div class="card-body p-4">
-                    <form th:action="@{/users/validate}" th:object="${user}" method="post">
+    <div class="form-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
 
-                        <div class="mb-3">
-                            <label for="fullname" class="form-label font-weight-bold">Nom Complet</label>
-                            <input type="text" th:field="*{fullname}" id="fullname" class="form-control" placeholder="Prénom Nom" required>
-                            <p class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="username" class="form-label font-weight-bold">Identifiant (Username)</label>
-                            <input type="text" th:field="*{username}" id="username" class="form-control" placeholder="Nom d'utilisateur" required>
-                            <p class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label font-weight-bold">Mot de passe</label>
-                            <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="********" required>
-                            <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label font-weight-bold">Rôle de l'utilisateur</label><br/>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{role}" th:value="ADMIN" id="roleAdmin">
-                                <label class="form-check-label" for="roleAdmin">Administrateur</label>
+                <div class="card form-card shadow-lg">
+                    <!-- En-tête -->
+                    <div class="card-header py-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-user-plus text-info fs-4 me-2"></i>
+                                <h4 class="mb-0 text-white fw-bold">Création d'un Compte Opérateur</h4>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{role}" th:value="USER" id="roleUser">
-                                <label class="form-check-label" for="roleUser">Utilisateur standard</label>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">
+                            Administration
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Enregistrez un nouvel utilisateur pour lui accorder l'accès au terminal de négociation Poseidon.
+                        </p>
+
+                        <form th:action="@{/users/validate}" th:object="${user}" method="post">
+
+                            <!-- NOM COMPLET -->
+                            <div class="mb-3">
+                                <label for="fullname" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-id-card text-info me-1"></i> Nom et Prénom de l'Opérateur
+                                </label>
+                                <input type="text" th:field="*{fullname}" id="fullname" class="form-control form-control-dark" placeholder="Ex: Alexandre Dubois" required />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></p>
                             </div>
-                            <p class="text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></p>
-                        </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success">Créer le compte</button>
-                            <a th:href="@{/users/list}" class="btn btn-outline-secondary">Annuler</a>
-                        </div>
+                            <!-- USERNAME -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-user-tag text-warning me-1"></i> Identifiant de Connexion (Username)
+                                </label>
+                                <input type="text" th:field="*{username}" id="username" class="form-control form-control-dark" placeholder="Ex: adubois" required />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                            </div>
 
-                    </form>
+                            <!-- PASSWORD -->
+                            <div class="mb-4">
+                                <label for="password" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-key text-success me-1"></i> Mot de Passe Initial
+                                </label>
+                                <input type="password" th:field="*{password}" id="password" class="form-control form-control-dark" placeholder="Mot de passe sécurisé (chiffré BCrypt)" required />
+                                <small class="text-muted d-block mt-1">Le mot de passe sera automatiquement chiffré avant stockage en base.</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                            </div>
+
+                            <!-- ROLES -->
+                            <div class="mb-4 p-3 rounded" style="background-color: #0b132b; border: 1px solid #334155;">
+                                <label class="form-label text-light fw-semibold small d-block mb-2">
+                                    <i class="fa-solid fa-user-shield text-info me-1"></i> Habilitation Attribuée
+                                </label>
+                                <div class="form-check form-check-inline me-4">
+                                    <input class="form-check-input" type="radio" th:field="*{role}" th:value="USER" id="roleUser" checked />
+                                    <label class="form-check-label text-light small" for="roleUser">
+                                        <strong class="text-info">TRADER (USER)</strong> - Passage d'ordres & Consultation
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" th:field="*{role}" th:value="ADMIN" id="roleAdmin" />
+                                    <label class="form-check-label text-light small" for="roleAdmin">
+                                        <strong class="text-warning">SUPERVISEUR (ADMIN)</strong> - Gestion complète
+                                    </label>
+                                </div>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></p>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit" class="btn btn-primary py-2 fw-semibold shadow-sm">
+                                    <i class="fa-solid fa-check me-1"></i> Créer le Profil Utilisateur
+                                </button>
+                                <a th:href="@{/users/list}" class="btn btn-outline-secondary py-2 text-light">
+                                    <i class="fa-solid fa-xmark me-1"></i> Annuler
+                                </a>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

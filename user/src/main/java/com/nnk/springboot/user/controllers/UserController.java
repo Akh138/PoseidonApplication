@@ -24,17 +24,24 @@ public class UserController {
     }
 
     // --- AJOUTER AVEC SÉCURITÉ ---
-    @PostMapping("/user/add") // Reçoit les données d'un nouvel utilisateur en JSON
+    @PostMapping("/user/add")
     public ResponseEntity<?> addUser(@Valid @RequestBody User user, BindingResult result) {
-        // @Valid : déclenche la vérification (ex: identifiant obligatoire)
-        // BindingResult : contient les erreurs si la validation échoue
 
+        // 1. On vérifie si la requête arrive bien ici
+        System.out.println("DEBUG : Une tentative d'inscription est arrivée pour : " + user.getUsername());
+
+        // 2. On vérifie si les annotations @NotBlank ont détecté une erreur
         if (result.hasErrors()) {
-            // Si le formulaire est mal rempli, on renvoie une erreur 400 (Bad Request)
+            System.out.println("DEBUG : Erreurs de validation trouvées : " + result.getAllErrors());
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
-        // Si tout est bon, on sauvegarde en base H2/MySQL et on renvoie un code 200 (OK)
-        return ResponseEntity.ok(userRepository.save(user));
+
+        // 3. Si on arrive ici, c'est que la validation est passée.
+        // On sauvegarde en base
+        User utilisateurSauvegarde = userRepository.save(user);
+        System.out.println("DEBUG : Utilisateur sauvegardé avec succès avec l'ID : " + utilisateurSauvegarde.getId());
+
+        return ResponseEntity.ok(utilisateurSauvegarde);
     }
 
     // --- LIRE UN SEUL ---

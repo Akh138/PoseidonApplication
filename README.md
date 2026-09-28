@@ -1,13 +1,12 @@
-# Poseidon - Application de Trading & Gestion de Risques
+# 🔱 Poseidon - Trading & Risk Management Platform
 
-Ce projet consiste en la refonte complète d'une application de gestion de risques financiers.
-Je suis parti d'un "skeleton" monolithique pour construire une architecture distribuée, sécurisée et scalable
+Une plateforme robuste de gestion des risques et des transactions financières, conçue avec une **architecture distribuée en Microservices** pour garantir scalabilité, intégrité des données et haute disponibilité.
 
+---
+## 🏗️ Architecture Technique
 
-## Architecture du système
-
-L'application est composée de 8 microservices qui communiquent au sein d'un réseau Docker :
-
+> Le projet repose sur une approche **Microservices** pour une maintenance et une évolution facilitées. Chaque service est indépendant et communique via une passerelle API.
+>
 *   **Gateway (9090)** : Point d'accès unique pour l'utilisateur.
 *   **Portail UI (8080)** : Interface web (Thymeleaf / Bootstrap).
 *   **Config Server (8071)** : Centralisation des configurations via un dépôt GitHub.
@@ -15,36 +14,62 @@ L'application est composée de 8 microservices qui communiquent au sein d'un ré
 *   **Services Métier** : BidList, Trade, CurvePoint, Rating, RuleName et User.
 *   **Base de données** : MySQL (persistant) et H2 (développement).
 
-
+---
 ## La Migration : Du Monolithe vers les Microservices
 
 Le point de départ était un projet monolithique sous Spring Boot 2.2 et Java 8.
 J'ai effectué une refonte complète pour séparer chaque domaine métier dans son propre service.
 
-### Avant : Architecture Monolithique
-L'ancien projet regroupait toutes les fonctionnalités dans un seul bloc de code.
-![Ancienne structure](./screenshots/old-monolith.png)
 
-### Après : Architecture Microservices
-Chaque service est désormais indépendant et possède son propre environnement.
-![Nouvelle structure](./screenshots/new-microservices.png)
+### Avant : Architecture Monolithique et après : Architecture Microservices
+|                                                           Ancienne structure                                                            | Nouvelle structure |
+|:---------------------------------------------------------------------------------------------------------------------------------------:| :---: |
+| L'ancien projet regroupait toutes <br/>les fonctionnalités dans un seul bloc de code. <img src="./screenshots/old-monolith.png" width="400"> |Chaque service est désormais indépendant<br/> et possède son propre environnement. <img src="./screenshots/new-microservices.png" width="400"> |
+---
+---
+## 🚀 Services Principaux
 
-## Stack Technique
+| Service | Rôle métier |
+| :--- | :--- |
+| **`identity-service`** | Authentification sécurisée (JWT, Spring Security). |
+| **`rating-service`** | Gestion des notations et risques. |
+| **`bidlist-service`** | Gestion des offres d'achat/vente (Bids). |
+| **`trade-service`** | Workflow de transactions financières. |
+| **`wallet-service`** | Gestion du solde et historique transactionnel. |
 
-Pour ce projet, j'ai choisi des outils modernes pour garantir la solidité du système :
+---
 
-*   **Java 17 & Spring Boot 3** : Utilisation de Jakarta EE pour la persistance des données.
-*   **OpenFeign** : Pour une communication typée et simplifiée entre les services (au lieu de RestTemplate).
-*   **Resilience4j** : Implémentation de disjoncteurs (Circuit Breaker) pour éviter les pannes en cascade.
-*   **Spring Cloud Config** : Décentralisation des réglages sur un repo GitHub sécurisé.
-*   **Docker & Compose** : Conteneurisation de chaque brique pour un déploiement facile.
-*   **MySQL & H2** : Gestion de la persistance avec MySQL pour la production et H2 pour les tests.
+## 🛠️ Stack Technique
 
-## Comment lancer le projet ?
+* **Développement :**
+  ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white)
+  ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+  ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-### Pré-requis
-*   Docker & Docker Compose
-*   Java 17 et Maven (pour compiler les JAR)
+* **Outils & Infrastructure :**
+  ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+  ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+  ![IntelliJ](https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
+---
+
+## 🔒 Sécurité & Intégrité
+> * **Authentification :** Gestion des rôles (Dresseur/Manager/Admin) via **JWT (JSON Web Token)** et chiffrement **BCrypt**.
+> * **Transactions :** Utilisation de transactions SQL atomiques pour garantir l'intégrité financière.
+> * **Résilience :** Implémentation du pattern **Circuit Breaker** (Resilience4j) pour éviter les pannes en cascade.
+> * **Validation :** Validation des données côté serveur avec `Spring Boot Validation`.
+
+---
+## 📸 Aperçu de l'interface
+
+| Dashboard Principal | Gestion des Panne (Circuit Breaker) |
+| :---: | :---: |
+| <img src="screenshots/dashboard.png" width="400"> | <img src="screenshots/circuit-breaker.png" width="400"> |
+
+| Liste de Données | Gestion des Rôles (403) |
+| :---: | :---: |
+| <img src="screenshots/list-view.png" width="400"> | <img src="screenshots/error-403.png" width="400"> |
+
 
 ### Installation rapide
 1. Cloner le projet :
@@ -60,21 +85,6 @@ Pour ce projet, j'ai choisi des outils modernes pour garantir la solidité du sy
 *   **Portail Web** : http://localhost:9090
 *   **Annuaire Consul** : http://localhost:8500
 *   **Identifiants par défaut** : admin / admin123
-
-##  Aperçu de l'interface
-Voici à quoi ressemble l'application finale une fois déployée :
-
-### Dashboard Principal
-![Dashboard](./screenshots/dashboard.png)
-
-### Gestion des données (Exemple : BidList)
-![Tableau](./screenshots/list-view.png)
-
-### 1. Gestion des pannes (Circuit Breaker)
-![Bandeau Maintenance](./screenshots/circuit-breaker.png)
-
-### 2. Sécurité et Rôles (RBAC)
-![Page 403](./screenshots/error-403.png)
 
 
 ##  Note de fin

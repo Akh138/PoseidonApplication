@@ -3,29 +3,89 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <div th:fragment="menu">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/}">🔱 POSEIDON</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto ms-4">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/bidList/list}">Bids</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/curvePoint/list}">Curves</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/rating/list}">Ratings</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/trade/list}">Trade</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/ruleName/list}">Rules</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow" style="background-color: #0b132b !important; border-bottom: 2px solid #1c2541;">
+        <div class="container-fluid px-4">
+            <!-- LOGO BRANDING SALLE DE MARCHÉ -->
+            <a class="navbar-brand fw-bold text-uppercase d-flex align-items-center" th:href="@{/}" style="letter-spacing: 1px; color: #48cae4;">
+                <span class="fs-4 me-2">🔱</span>
+                <span>POSEIDON <span class="badge bg-primary text-light fs-6 ms-1" style="font-size: 0.65rem !important;">DESK</span></span>
+            </a>
 
-                    <!-- ICI LA SÉCURITÉ : Seul l'ADMIN voit ce lien -->
+            <!-- BOUTON TOGGLE MOBILE -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTrading" aria-controls="navbarTrading" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTrading">
+                <!-- LIENS METIER AVEC ICONES ET TERMES CLAIRS -->
+                <ul class="navbar-nav me-auto ms-lg-4 mb-2 mb-lg-0">
+                    <!-- 1. Bids (Ordres d'achat) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-3" th:href="@{/bidList/list}">
+                            <i class="fa-solid fa-money-bill-trend-up text-info me-1"></i> Ordres (Bids)
+                        </a>
+                    </li>
+
+                    <!-- 2. Trades (Transactions conclues) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-3" th:href="@{/trade/list}">
+                            <i class="fa-solid fa-handshake text-success me-1"></i> Transactions (Trades)
+                        </a>
+                    </li>
+
+                    <!-- 3. Curves (Courbes de taux) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-3" th:href="@{/curvePoint/list}">
+                            <i class="fa-solid fa-chart-line text-warning me-1"></i> Courbes de Taux
+                        </a>
+                    </li>
+
+                    <!-- 4. Ratings (Risque et notation de crédit) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-3" th:href="@{/rating/list}">
+                            <i class="fa-solid fa-shield-halved text-danger me-1"></i> Notations Risque
+                        </a>
+                    </li>
+
+                    <!-- 5. Rules (Règles de conformité / Trading) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-3" th:href="@{/ruleName/list}">
+                            <i class="fa-solid fa-scale-balanced text-primary me-1"></i> Règles Métier
+                        </a>
+                    </li>
+
+                    <!-- 6. ADMIN UNIQUEMENT -->
                     <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a class="nav-link text-warning" th:href="@{/users/list}">ADMIN : Users</a>
+                        <a class="nav-link px-3 text-warning fw-semibold" th:href="@{/users/list}">
+                            <i class="fa-solid fa-users-gear text-warning me-1"></i> Administration
+                        </a>
                     </li>
                 </ul>
 
+                <!-- SECTION TRADER CONNECTE ET STATUT SYSTEME -->
                 <div class="d-flex align-items-center">
-                        <span class="text-light me-3" sec:authorize="isAuthenticated()">
-                            Bienvenue, <span class="text-info" sec:authentication="name">Nom</span>
-                        </span>
-                    <form th:action="@{/logout}" method="post">
-                        <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+                    <!-- Indicateur Marché Ouvert -->
+                    <div class="d-none d-xl-flex align-items-center me-3 px-3 py-1 bg-black bg-opacity-50 rounded-pill border border-success border-opacity-50">
+                        <span class="spinner-grow spinner-grow-sm text-success me-2" role="status" style="width: 8px; height: 8px;"></span>
+                        <span class="text-success small fw-bold" style="letter-spacing: 0.5px;">MARKET LIVE</span>
+                    </div>
+
+                    <!-- Profil du Trader -->
+                    <div class="text-light me-3 d-flex align-items-center" sec:authorize="isAuthenticated()">
+                        <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <span class="small text-muted d-block" style="font-size: 0.7rem; line-height: 1;">TRADER</span>
+                            <span class="fw-bold text-light" sec:authentication="name" style="font-size: 0.85rem;">Utilisateur</span>
+                        </div>
+                    </div>
+
+                    <!-- Déconnexion -->
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button class="btn btn-outline-danger btn-sm px-3" type="submit">
+                            <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Quitter
+                        </button>
                     </form>
                 </div>
             </div>

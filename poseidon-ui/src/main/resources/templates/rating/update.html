@@ -3,58 +3,113 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Modifier la notation</title>
+    <title>Poseidon - Modifier la Notation</title>
+    <style>
+        .form-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+        .form-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #f87171 !important;
+            box-shadow: 0 0 0 0.25rem rgba(248, 113, 113, 0.25) !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow border-info">
-                <div class="card-header bg-info text-white">
-                    <h3 class="mb-0">Modifier la notation n° <span th:text="${rating.id}"></span></h3>
+    <div class="form-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <div class="card form-card shadow-lg">
+                    <!-- En-tête -->
+                    <div class="card-header py-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-pen-to-square text-danger fs-4 me-2"></i>
+                                <h4 class="mb-0 text-white fw-bold">
+                                    Modification Notation <span class="badge bg-secondary font-monospace ms-1" th:text="'#' + ${rating.id}">#1</span>
+                                </h4>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(248, 113, 113, 0.2); color: #f87171; border: 1px solid #f87171;">
+                            Risk Management
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Ajustez les équivalences d'évaluation ou le rang de priorité pour ce palier de solvabilité.
+                        </p>
+
+                        <form th:action="@{/rating/update/{id}(id=${rating.id})}" th:object="${rating}" method="post" novalidate>
+
+                            <!-- ID Caché indispensable -->
+                            <input type="hidden" th:field="*{id}">
+
+                            <!-- MOODY'S -->
+                            <div class="mb-3">
+                                <label for="moodysRating" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-award text-info me-1"></i> Notation Moody's
+                                </label>
+                                <input type="text" th:field="*{moodysRating}" class="form-control form-control-dark" id="moodysRating" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('moodysRating')}" th:errors="*{moodysRating}"></p>
+                            </div>
+
+                            <!-- S&P -->
+                            <div class="mb-3">
+                                <label for="sandPRating" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-award text-success me-1"></i> Notation Standard & Poor's (S&P)
+                                </label>
+                                <input type="text" th:field="*{sandPRating}" class="form-control form-control-dark" id="sandPRating" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('sandPRating')}" th:errors="*{sandPRating}"></p>
+                            </div>
+
+                            <!-- FITCH -->
+                            <div class="mb-3">
+                                <label for="fitchRating" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-award text-warning me-1"></i> Notation Fitch Ratings
+                                </label>
+                                <input type="text" th:field="*{fitchRating}" class="form-control form-control-dark" id="fitchRating" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('fitchRating')}" th:errors="*{fitchRating}"></p>
+                            </div>
+
+                            <!-- NUMERO ORDRE -->
+                            <div class="mb-4">
+                                <label for="orderNumber" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-arrow-down-1-9 text-danger me-1"></i> Rang Hiérarchique de Risque
+                                </label>
+                                <input type="number" th:field="*{orderNumber}" class="form-control form-control-dark" id="orderNumber" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('orderNumber')}" th:errors="*{orderNumber}"></p>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit" class="btn btn-danger py-2 fw-semibold shadow-sm" style="background-color: #ef4444; border-color: #ef4444;">
+                                    <i class="fa-solid fa-floppy-disk me-1"></i> Enregistrer les Modifications
+                                </button>
+                                <a th:href="@{/rating/list}" class="btn btn-outline-secondary py-2 text-light">
+                                    <i class="fa-solid fa-xmark me-1"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <!-- On ajoute novalidate pour tester la validation Java -->
-                    <form th:action="@{/rating/update/{id}(id=${rating.id})}" th:object="${rating}" method="post" novalidate>
 
-                        <!-- CHAMP CACHÉ POUR L'ID (Indispensable) -->
-                        <input type="hidden" th:field="*{id}">
-
-                        <div class="mb-3">
-                            <label for="moodysRating" class="form-label font-weight-bold">Moody's Rating</label>
-                            <input type="text" th:field="*{moodysRating}" class="form-control" id="moodysRating" />
-                            <!-- AFFICHAGE ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('moodysRating')}" th:errors="*{moodysRating}"></p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="sandPRating" class="form-label font-weight-bold">S&P Rating</label>
-                            <input type="text" th:field="*{sandPRating}" class="form-control" id="sandPRating" />
-                            <!-- AFFICHAGE ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('sandPRating')}" th:errors="*{sandPRating}"></p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="fitchRating" class="form-label font-weight-bold">Fitch Rating</label>
-                            <input type="text" th:field="*{fitchRating}" class="form-control" id="fitchRating" />
-                            <!-- AFFICHAGE ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('fitchRating')}" th:errors="*{fitchRating}"></p>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="orderNumber" class="form-label font-weight-bold">Numéro d'ordre</label>
-                            <input type="number" th:field="*{orderNumber}" class="form-control" id="orderNumber" />
-                            <!-- AFFICHAGE ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('orderNumber')}" th:errors="*{orderNumber}"></p>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Valider les modifications</button>
-                            <a th:href="@{/rating/list}" class="btn btn-outline-danger">Annuler</a>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

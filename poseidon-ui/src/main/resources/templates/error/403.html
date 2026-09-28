@@ -3,25 +3,60 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Accès Refusé</title>
+    <title>Poseidon - Habilitation Insuffisante (403)</title>
+    <style>
+        .error-container {
+            margin-top: 50px;
+            padding-bottom: 50px;
+        }
+        .error-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #ef4444 !important;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2);
+        }
+    </style>
 </head>
 <body>
 
-<div layout:fragment="content" class="text-center mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card border-danger shadow-lg">
-                <div class="card-body p-5">
-                    <i class="fas fa-user-shield text-danger mb-4" style="font-size: 5rem;"></i>
-                    <h1 class="display-4 text-danger">ERREUR 403</h1>
-                    <h2 class="mb-4">Accès Interdit</h2>
-                    <p class="lead">Désolé, votre badge ne vous donne pas accès à cette zone sécurisée de Poseidon.</p>
-                    <hr class="my-4">
-                    <p>Si vous pensez qu'il s'agit d'une erreur, contactez l'administrateur système.</p>
-                    <a th:href="@{/}" class="btn btn-primary mt-3">
-                        <i class="fas fa-home"></i> Retour à l'accueil
-                    </a>
+<div layout:fragment="content">
+    <div class="error-container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <div class="card error-card p-4 p-md-5">
+                    <div class="card-body">
+                        <!-- ICÔNE BOUCLIER ALERTE -->
+                        <div class="mb-3">
+                            <i class="fa-solid fa-shield-halved text-danger" style="font-size: 4.5rem;"></i>
+                        </div>
+
+                        <span class="badge rounded-pill px-3 py-1 mb-3" style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; font-size: 0.75rem;">
+                        CONTRÔLE DE SÉCURITÉ • CODE 403
+                    </span>
+
+                        <h2 class="fw-bold text-white mb-2">Habilitation Insuffisante</h2>
+                        <h5 class="text-danger fw-semibold mb-3">Accès Réservé aux Superviseurs (ADMIN)</h5>
+
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Votre profil d'opérateur ne dispose pas des privilèges réglementaires requis pour consulter cette section confidentielle de la salle des marchés.
+                        </p>
+
+                        <hr class="border-secondary my-4">
+
+                        <p class="text-muted small mb-4">
+                            Si vous devez exécuter une opération d'audit ou de paramétrage, veuillez contacter votre responsable de conformité ou un administrateur système.
+                        </p>
+
+                        <div>
+                            <a th:href="@{/}" class="btn btn-primary px-4 py-2 fw-semibold shadow-sm">
+                                <i class="fa-solid fa-house me-2"></i> Retour au Desk Principal
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

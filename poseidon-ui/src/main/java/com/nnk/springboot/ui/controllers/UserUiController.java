@@ -82,7 +82,9 @@ public class UserUiController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
+        User user = new User();
+        user.setRole("USER"); // Rôle pré-rempli
+        model.addAttribute("user", user);
         return "register";
     }
 

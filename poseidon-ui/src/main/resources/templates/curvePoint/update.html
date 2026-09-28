@@ -3,51 +3,108 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Modifier le point de courbe</title>
+    <title>Poseidon - Modifier le Point de Courbe</title>
+    <style>
+        .form-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+        .form-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #fbbf24 !important;
+            box-shadow: 0 0 0 0.25rem rgba(251, 191, 36, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow border-info">
-                <div class="card-header bg-info text-white">
-                    <h3 class="mb-0">Modifier le point n° <span th:text="${curvePoint.id}"></span></h3>
+    <div class="form-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <!-- CARTE DU FORMULAIRE MODIFICATION -->
+                <div class="card form-card shadow-lg">
+                    <!-- En-tête -->
+                    <div class="card-header py-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-pen-to-square text-warning fs-4 me-2"></i>
+                                <h4 class="mb-0 text-white fw-bold">
+                                    Modification Point <span class="badge bg-secondary font-monospace ms-1" th:text="'#' + ${curvePoint.id}">#1</span>
+                                </h4>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24;">
+                            Quant & Pricing
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Ajustez le taux de rendement ou la maturité associée à ce point de projection financière.
+                        </p>
+
+                        <form th:action="@{/curvePoint/update/{id}(id=${curvePoint.id})}" th:object="${curvePoint}" method="post" novalidate>
+
+                            <!-- ID Caché indispensable -->
+                            <input type="hidden" th:field="*{id}">
+
+                            <!-- CHAMP CURVE ID -->
+                            <div class="mb-3">
+                                <label for="curveId" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-timeline text-warning me-1"></i> Identifiant de la Courbe (Curve ID)
+                                </label>
+                                <input type="number" th:field="*{curveId}" id="curveId" class="form-control form-control-dark" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('curveId')}" th:errors="*{curveId}"></p>
+                            </div>
+
+                            <!-- CHAMP TERME -->
+                            <div class="mb-3">
+                                <label for="term" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-hourglass-half text-info me-1"></i> Échéance / Maturité en Années (Term)
+                                </label>
+                                <input type="number" step="0.01" th:field="*{term}" id="term" class="form-control form-control-dark" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
+                            </div>
+
+                            <!-- CHAMP VALEUR -->
+                            <div class="mb-4">
+                                <label for="value" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-percent text-success me-1"></i> Taux d'Intérêt / Rendement (Value)
+                                </label>
+                                <input type="number" step="0.01" th:field="*{value}" id="value" class="form-control form-control-dark" />
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit" class="btn btn-warning py-2 fw-semibold text-dark shadow-sm">
+                                    <i class="fa-solid fa-floppy-disk me-1"></i> Enregistrer les Modifications
+                                </button>
+                                <a th:href="@{/curvePoint/list}" class="btn btn-outline-secondary py-2 text-light">
+                                    <i class="fa-solid fa-xmark me-1"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <!-- AJOUT de novalidate pour laisser Java gérer les messages d'erreurs -->
-                    <form th:action="@{/curvePoint/update/{id}(id=${curvePoint.id})}" th:object="${curvePoint}" method="post" novalidate>
 
-                        <!-- CHAMP CACHÉ POUR L'ID (CRUCIAL) -->
-                        <input type="hidden" th:field="*{id}">
-
-                        <div class="mb-3">
-                            <label for="curveId" class="form-label font-weight-bold">Curve Id</label>
-                            <input type="number" th:field="*{curveId}" id="curveId" class="form-control" />
-                            <!-- AJOUT DU MESSAGE D'ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('curveId')}" th:errors="*{curveId}"></p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="term" class="form-label font-weight-bold">Terme</label>
-                            <input type="number" step="0.01" th:field="*{term}" id="term" class="form-control" />
-                            <!-- AJOUT DU MESSAGE D'ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="value" class="form-label font-weight-bold">Valeur</label>
-                            <input type="number" step="0.01" th:field="*{value}" id="value" class="form-control" />
-                            <!-- AJOUT DU MESSAGE D'ERREUR -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Valider les modifications</button>
-                            <a th:href="@{/curvePoint/list}" class="btn btn-outline-danger">Annuler</a>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

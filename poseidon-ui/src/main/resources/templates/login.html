@@ -2,49 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Poseidon - Connexion</title>
+    <title>Poseidon - Connexion Trading Desk</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .login-container { max-width: 400px; margin-top: 100px; }
+        body {
+            background-color: #0b132b;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .login-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 14px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 420px;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 11px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+        .badge-terminal {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container login-container">
-    <div class="card shadow">
-        <div class="card-header bg-dark text-white text-center">
-            <h3>Connexion</h3>
-        </div>
-        <div class="card-body">
+<div class="login-card shadow-lg">
 
-            <!-- Message d'erreur si le login rate -->
-            <div th:if="${param.error}" class="alert alert-danger">
-                Identifiants incorrects.
-            </div>
-
-            <!-- Message de succès après inscription -->
-            <div th:if="${param.success}" class="alert alert-success">
-                Inscription réussie ! Connectez-vous.
-            </div>
-
-            <form th:action="@{/login}" method="post">
-                <div class="mb-3">
-                    <label class="form-label">Utilisateur</label>
-                    <input type="text" name="username" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Mot de passe</label>
-                    <input type="password" name="password" class="form-control" required>
-                </div>
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Se connecter</button>
-                </div>
-            </form>
-        </div>
-        <div class="card-footer text-center">
-            <p>Nouveau ici ? <a th:href="@{/register}">Créer un compte</a></p>
-        </div>
+    <!-- En-tête de marque -->
+    <div class="text-center pt-4 pb-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+        <div class="fs-1 mb-1">🔱</div>
+        <h3 class="fw-bold mb-1" style="letter-spacing: 1px; color: #48cae4;">POSEIDON</h3>
+        <span class="badge rounded-pill badge-terminal text-uppercase px-3 py-1">Terminal de Marché Sécurisé</span>
     </div>
+
+    <div class="card-body p-4">
+
+        <!-- Message d'erreur si le login rate -->
+        <div th:if="${param.error}" class="alert alert-danger py-2 px-3 small border-0 d-flex align-items-center mb-3" style="background-color: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444 !important;">
+            <i class="fa-solid fa-circle-exclamation me-2"></i> Identifiants incorrects. Veuillez réessayer.
+        </div>
+
+        <!-- Message de succès après inscription -->
+        <div th:if="${param.success}" class="alert alert-success py-2 px-3 small border-0 d-flex align-items-center mb-3" style="background-color: rgba(74, 222, 128, 0.2); color: #86efac; border: 1px solid #4ade80 !important;">
+            <i class="fa-solid fa-circle-check me-2"></i> Compte créé avec succès ! Connectez-vous.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label text-light small fw-semibold">
+                    <i class="fa-solid fa-user-tie text-info me-1"></i> Identifiant Opérateur
+                </label>
+                <input type="text" name="username" class="form-control form-control-dark" placeholder="Identifiant (ex: admin, habib)" required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-light small fw-semibold">
+                    <i class="fa-solid fa-key text-warning me-1"></i> Mot de Passe
+                </label>
+                <input type="password" name="password" class="form-control form-control-dark" placeholder="Mot de passe" required>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary py-2 fw-semibold shadow-sm">
+                    <i class="fa-solid fa-right-to-bracket me-1"></i> Ouvrir la Session
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Pied de carte -->
+    <div class="card-footer text-center py-3 border-top border-secondary" style="background-color: #131b2e;">
+        <span class="text-light text-opacity-75 small">Nouvel opérateur ? </span>
+        <a th:href="@{/register}" class="text-info fw-semibold text-decoration-none small">
+            Créer un compte <i class="fa-solid fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+
 </div>
 
 </body>

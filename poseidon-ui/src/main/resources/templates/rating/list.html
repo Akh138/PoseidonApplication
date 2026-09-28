@@ -4,50 +4,176 @@
       layout:decorate="~{layout/main}">
 
 <head>
-    <title>Poseidon - Notations</title>
+    <title>Poseidon - Notations Risque (Ratings)</title>
+    <style>
+        .page-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+
+        /* Bandeau supérieur */
+        .page-header-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            padding: 22px 28px;
+            margin-bottom: 25px;
+        }
+
+        /* Tableau */
+        .trading-table-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .table-dark-custom {
+            background-color: transparent !important;
+            color: #f1f5f9 !important;
+            margin-bottom: 0;
+        }
+        .table-dark-custom th {
+            background-color: #0b132b !important;
+            color: #94a3b8 !important;
+            font-size: 0.8rem;
+            text-uppercase: true;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #334155 !important;
+            padding: 14px 18px;
+        }
+        .table-dark-custom td {
+            background-color: transparent !important;
+            color: #e2e8f0 !important;
+            border-bottom: 1px solid #29354d !important;
+            padding: 14px 18px;
+            vertical-align: middle;
+        }
+        .table-dark-custom tbody tr:hover td {
+            background-color: rgba(248, 113, 113, 0.08) !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <!-- MESSAGE DE MAINTENANCE (S'affiche uniquement en cas de panne) -->
-    <div th:if="${errorMsg}" class="alert alert-danger shadow-sm mt-3" role="alert">
-        <i class="fas fa-tools"></i> <span th:text="${errorMsg}">Message d'erreur</span>
-    </div>
+    <div class="page-container">
 
-    <div class="row mt-4 mb-3">
-        <div class="col-6">
-            <h2>Liste des Notations (Rating)</h2>
+        <!-- MESSAGE D'ALERTE -->
+        <div th:if="${errorMsg}" class="alert alert-warning shadow-sm border-0 d-flex align-items-center mb-4" role="alert">
+            <i class="fa-solid fa-triangle-exclamation fs-4 me-3 text-warning"></i>
+            <div>
+                <strong class="d-block">Alerte Gestion des Risques :</strong>
+                <span th:text="${errorMsg}">Message d'erreur</span>
+            </div>
         </div>
-        <div class="col-6 text-right">
-            <a th:href="@{/rating/add}" class="btn btn-primary btn-sm">Ajouter une notation</a>
-        </div>
-    </div>
 
-    <table class="table table-bordered table-striped shadow-sm bg-white">
-        <thead class="table-dark">
-        <tr>
-            <th>Id</th>
-            <th>Moody's</th>
-            <th>S&P</th>
-            <th>Fitch</th>
-            <th>Ordre</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="rating : ${ratings}">
-            <td th:text="${rating.id}"></td>
-            <td th:text="${rating.moodysRating}"></td>
-            <td th:text="${rating.sandPRating}"></td>
-            <td th:text="${rating.fitchRating}"></td>
-            <td th:text="${rating.orderNumber}"></td>
-            <td class="text-center">
-                <a th:href="@{/rating/update/{id}(id=${rating.id})}" class="btn btn-info btn-sm">Modifier</a>
-                <a th:href="@{/rating/delete/{id}(id=${rating.id})}" class="btn btn-danger btn-sm">Supprimer</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <!-- BANDEAU D'EN-TÊTE PRO -->
+        <div class="page-header-card shadow">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <!-- Fil d'Ariane -->
+                    <div class="small mb-2" style="font-size: 0.78rem;">
+                        <a th:href="@{/}" class="text-info text-decoration-none"><i class="fa-solid fa-house me-1"></i>Desk</a>
+                        <span class="text-muted mx-1">/</span>
+                        <span class="text-muted">Risk Management</span>
+                        <span class="text-muted mx-1">/</span>
+                        <span class="text-light fw-semibold">Notations Financières</span>
+                    </div>
+
+                    <!-- Titre avec badge rouge/risque -->
+                    <h3 class="fw-bold text-white mb-1 d-flex align-items-center flex-wrap">
+                        <i class="fa-solid fa-shield-halved text-danger me-2"></i>
+                        Échelle des Notations de Crédit (Ratings)
+                        <span class="badge rounded-pill ms-2 px-2 py-1" style="font-size: 0.7rem; background-color: rgba(248, 113, 113, 0.2); color: #f87171; border: 1px solid #f87171;">
+                        Risk Management
+                    </span>
+                    </h3>
+
+                    <!-- Sous-titre -->
+                    <p class="text-light text-opacity-75 small mb-0">
+                        Correspondance des scores de solvabilité des agences Moody's, S&P et Fitch pour l'évaluation du risque de contrepartie.
+                    </p>
+                </div>
+
+                <!-- Bouton d'action -->
+                <div>
+                    <a th:href="@{/rating/add}" class="btn btn-danger px-3 py-2 fw-semibold shadow-sm" style="background-color: #ef4444; border-color: #ef4444;">
+                        <i class="fa-solid fa-plus-circle me-1"></i> Ajouter une Notation
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARTE TABLEAU -->
+        <div class="card trading-table-card shadow">
+            <div class="card-header border-bottom border-secondary d-flex justify-content-between align-items-center py-3 px-4" style="background-color: #131b2e;">
+            <span class="text-light fw-semibold small text-uppercase" style="letter-spacing: 0.5px;">
+                <i class="fa-solid fa-layer-group text-danger me-2"></i>Grille de Solvabilité
+            </span>
+                <span class="badge bg-dark border border-secondary text-danger small" th:text="${#lists.size(ratings)} + ' niveau(x)'">
+                0 niveau(x)
+            </span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-dark-custom">
+                    <thead>
+                    <tr>
+                        <th style="width: 80px;">Réf #</th>
+                        <th>Score Moody's</th>
+                        <th>Score Standard & Poor's</th>
+                        <th>Score Fitch</th>
+                        <th class="text-center" style="width: 130px;">Rang d'Ordre</th>
+                        <th class="text-center" style="width: 220px;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- BOUCLE RATINGS -->
+                    <tr th:each="rating : ${ratings}">
+                        <td>
+                            <span class="badge bg-secondary font-monospace" th:text="'#' + ${rating.id}">#1</span>
+                        </td>
+                        <td>
+                            <span class="badge px-3 py-1 font-monospace" style="background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;" th:text="${rating.moodysRating}">Aaa</span>
+                        </td>
+                        <td>
+                            <span class="badge px-3 py-1 font-monospace" style="background-color: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid #4ade80;" th:text="${rating.sandPRating}">AAA</span>
+                        </td>
+                        <td>
+                            <span class="badge px-3 py-1 font-monospace" style="background-color: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24;" th:text="${rating.fitchRating}">AAA</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-dark border border-secondary text-light font-monospace" th:text="'Rang ' + ${rating.orderNumber}">Rang 1</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm">
+                                <a th:href="@{/rating/update/{id}(id=${rating.id})}" class="btn btn-outline-info" title="Modifier la notation">
+                                    <i class="fa-solid fa-pen-to-square me-1"></i> Modifier
+                                </a>
+                                <a th:href="@{/rating/delete/{id}(id=${rating.id})}"
+                                   class="btn btn-outline-danger"
+                                   onclick="return confirm('Confirmez-vous la suppression de ce niveau de notation ?');"
+                                   title="Supprimer">
+                                    <i class="fa-solid fa-trash me-1"></i> Supprimer
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- SI AUCUNE NOTATION -->
+                    <tr th:if="${#lists.isEmpty(ratings)}">
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-shield-halved fs-1 mb-3 text-secondary d-block"></i>
+                            <p class="mb-1 text-light">Aucune notation financière configurée.</p>
+                            <small class="text-muted">Cliquez sur "Ajouter une Notation" pour calibrer les seuils d'agences.</small>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 </body>

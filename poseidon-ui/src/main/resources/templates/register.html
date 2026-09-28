@@ -2,49 +2,108 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Poseidon - Inscription</title>
+    <title>Poseidon - Inscription Opérateur</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .register-container { max-width: 400px; margin-top: 50px; }
+        body {
+            background-color: #0b132b;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .register-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 14px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 440px;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+        .badge-terminal {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container register-container">
-    <div class="card">
-        <div class="card-header bg-primary text-white text-center">
-            <h3>Créer un compte</h3>
-        </div>
-        <div class="card-body">
-            <!-- Le formulaire renvoie vers la méthode POST de ton Controller UI -->
-            <form th:action="@{/register/validate}" th:object="${user}" method="post">
+<div class="register-card shadow-lg">
 
-                <div class="mb-3">
-                    <label class="form-label">Nom Complet</label>
-                    <input type="text" th:field="*{fullname}" class="form-control" placeholder="Ex: Jean Dupont" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Nom d'utilisateur</label>
-                    <input type="text" th:field="*{username}" class="form-control" placeholder="Identifiant" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Mot de passe</label>
-                    <input type="password" th:field="*{password}" class="form-control" placeholder="********" required>
-                </div>
-
-                <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-success">S'inscrire</button>
-                    <a th:href="@{/}" class="btn btn-outline-secondary">Retour à l'accueil</a>
-                </div>
-
-            </form>
-        </div>
-        <div class="card-footer text-center">
-            <small>Déjà un compte ? <a th:href="@{/login}">Se connecter</a></small>
-        </div>
+    <!-- En-tête de marque -->
+    <div class="text-center pt-4 pb-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+        <div class="fs-1 mb-1">🔱</div>
+        <h3 class="fw-bold mb-1" style="letter-spacing: 1px; color: #48cae4;">POSEIDON</h3>
+        <span class="badge rounded-pill badge-terminal text-uppercase px-3 py-1">Enregistrement Opérateur</span>
     </div>
+
+    <div class="card-body p-4">
+        <p class="text-light text-opacity-75 small text-center mb-3">
+            Créez votre profil Trader pour accéder à la station de négociation.
+        </p>
+
+        <!-- Formulaire avec le rôle caché USER obligatoire -->
+        <form th:action="@{/register/validate}" th:object="${user}" method="post">
+            <input type="hidden" name="role" value="USER" />
+
+            <div class="mb-3">
+                <label class="form-label text-light small fw-semibold">
+                    <i class="fa-solid fa-id-card text-info me-1"></i> Nom Complet
+                </label>
+                <input type="text" th:field="*{fullname}" class="form-control form-control-dark" placeholder="Ex: Jean Dupont" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-light small fw-semibold">
+                    <i class="fa-solid fa-user-tag text-warning me-1"></i> Nom d'utilisateur (Identifiant)
+                </label>
+                <input type="text" th:field="*{username}" class="form-control form-control-dark" placeholder="Identifiant unique" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-light small fw-semibold">
+                    <i class="fa-solid fa-key text-success me-1"></i> Mot de passe
+                </label>
+                <input type="password" th:field="*{password}" class="form-control form-control-dark" placeholder="********" required>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary py-2 fw-semibold shadow-sm">
+                    <i class="fa-solid fa-user-check me-1"></i> Finaliser l'Inscription
+                </button>
+                <a th:href="@{/login}" class="btn btn-outline-secondary py-2 text-light small">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Retour à la Connexion
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Pied de carte -->
+    <div class="card-footer text-center py-3 border-top border-secondary" style="background-color: #131b2e;">
+        <small class="text-light text-opacity-75">Déjà habilité ? <a th:href="@{/login}" class="text-info fw-semibold text-decoration-none">Se connecter</a></small>
+    </div>
+
 </div>
 
 </body>

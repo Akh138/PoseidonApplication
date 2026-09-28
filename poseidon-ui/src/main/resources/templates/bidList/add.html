@@ -3,44 +3,106 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Ajouter une offre</title>
+    <title>Poseidon - Nouvel Ordre d'Achat</title>
+    <style>
+        .form-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+        .form-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Ajouter une nouvelle offre</h3>
+    <div class="form-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <!-- CARTE DU FORMULAIRE EN MODE TRADING SOMBRE -->
+                <div class="card form-card shadow-lg">
+                    <!-- En-tête -->
+                    <div class="card-header py-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-plus-circle text-info fs-4 me-2"></i>
+                                <h4 class="mb-0 text-white fw-bold">Saisie d'un Nouvel Ordre</h4>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">
+                            Front-Office
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Renseignez les paramètres financiers de l'ordre d'achat avant sa soumission au carnet de négociation.
+                        </p>
+
+                        <form th:action="@{/bidList/validate}" th:object="${bidList}" method="post" novalidate>
+
+                            <!-- CHAMP COMPTE -->
+                            <div class="mb-3">
+                                <label for="account" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-wallet text-info me-1"></i> Compte Client / Teneur de Compte
+                                </label>
+                                <input type="text" th:field="*{account}" id="account" class="form-control form-control-dark" placeholder="Ex: Corporate Finance, Fonds Croissance..." />
+                                <small class="text-muted d-block mt-1">Identifiant du compte débité pour l'opération.</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
+                            </div>
+
+                            <!-- CHAMP TYPE D'ORDRE -->
+                            <div class="mb-3">
+                                <label for="type" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-tag text-warning me-1"></i> Type d'Ordre
+                                </label>
+                                <input type="text" th:field="*{type}" id="type" class="form-control form-control-dark" placeholder="Ex: BUY, LIMIT, STOP, SPOT..." />
+                                <small class="text-muted d-block mt-1">Convention de passage d'ordre (ex: BUY pour un achat au marché).</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+                            </div>
+
+                            <!-- CHAMP QUANTITE -->
+                            <div class="mb-4">
+                                <label for="bidQuantity" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-coins text-success me-1"></i> Volume / Quantité Demandée
+                                </label>
+                                <input type="number" step="0.01" th:field="*{bidQuantity}" id="bidQuantity" class="form-control form-control-dark" placeholder="Ex: 500.00" />
+                                <small class="text-muted d-block mt-1">Nombre de titres ou montant nominal du contrat.</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('bidQuantity')}" th:errors="*{bidQuantity}"></p>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit" class="btn btn-primary py-2 fw-semibold shadow-sm">
+                                    <i class="fa-solid fa-check me-1"></i> Transmettre l'Ordre au Marché
+                                </button>
+                                <a th:href="@{/bidList/list}" class="btn btn-outline-secondary py-2 text-light">
+                                    <i class="fa-solid fa-xmark me-1"></i> Annuler et retourner au carnet
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <form th:action="@{/bidList/validate}" th:object="${bidList}" method="post" novalidate>
 
-                        <div class="mb-3">
-                            <label for="account" class="form-label font-weight-bold">Compte (Account)</label>
-                            <input type="text" th:field="*{account}" id="account" class="form-control" placeholder="Ex: Corporate" />
-                            <p class="text-danger" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="type" class="form-label font-weight-bold">Type</label>
-                            <input type="text" th:field="*{type}" id="type" class="form-control" placeholder="Ex: Buy/Sell" />
-                            <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="bidQuantity" class="form-label font-weight-bold">Quantité</label>
-                            <input type="number" step="0.01" th:field="*{bidQuantity}" id="bidQuantity" class="form-control" placeholder="0.00"/>
-                            <p class="text-danger" th:if="${#fields.hasErrors('bidQuantity')}" th:errors="*{bidQuantity}"></p>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success">Enregistrer l'offre</button>
-                            <a th:href="@{/bidList/list}" class="btn btn-outline-secondary">Annuler</a>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

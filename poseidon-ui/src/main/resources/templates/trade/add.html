@@ -3,51 +3,105 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Poseidon - Nouveau Trade</title>
+    <title>Poseidon - Enregistrer une Transaction</title>
+    <style>
+        .form-container {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+        .form-card {
+            background-color: #1c2541 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .form-control-dark {
+            background-color: #0b132b !important;
+            border: 1px solid #334155 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .form-control-dark:focus {
+            border-color: #4ade80 !important;
+            box-shadow: 0 0 0 0.25rem rgba(74, 222, 128, 0.25) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #64748b !important;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Enregistrer une transaction</h3>
+    <div class="form-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <div class="card form-card shadow-lg">
+                    <!-- En-tête -->
+                    <div class="card-header py-3 px-4 border-bottom border-secondary" style="background-color: #131b2e;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-handshake text-success fs-4 me-2"></i>
+                                <h4 class="mb-0 text-white fw-bold">Saisie d'une Transaction Conclue</h4>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid #4ade80;">
+                            Middle-Office
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <p class="text-light text-opacity-75 small mb-4">
+                            Enregistrez un contrat d'exécution ferme validé avec la contrepartie financière.
+                        </p>
+
+                        <form th:action="@{/trade/validate}" th:object="${trade}" method="post" novalidate>
+
+                            <!-- COMPTE -->
+                            <div class="mb-3">
+                                <label for="account" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-building-columns text-success me-1"></i> Compte / Banque Contrepartie
+                                </label>
+                                <input type="text" th:field="*{account}" id="account" class="form-control form-control-dark" placeholder="Ex: BNP Paribas, Société Générale..." />
+                                <small class="text-muted d-block mt-1">Établissement ou compte client ayant validé le trade.</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
+                            </div>
+
+                            <!-- TYPE -->
+                            <div class="mb-3">
+                                <label for="type" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-tag text-info me-1"></i> Type de Transaction
+                                </label>
+                                <input type="text" th:field="*{type}" id="type" class="form-control form-control-dark" placeholder="Ex: Spot, Forward, Swap, Cash..." />
+                                <small class="text-muted d-block mt-1">Nature de l'instrument financier négocié.</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+                            </div>
+
+                            <!-- QUANTITÉ ACHAT -->
+                            <div class="mb-4">
+                                <label for="buyQuantity" class="form-label text-light fw-semibold small">
+                                    <i class="fa-solid fa-coins text-warning me-1"></i> Volume Ferme Acheté (Buy Quantity)
+                                </label>
+                                <input type="number" step="0.01" th:field="*{buyQuantity}" id="buyQuantity" class="form-control form-control-dark" placeholder="Ex: 1000.00" />
+                                <small class="text-muted d-block mt-1">Montant nominal ou nombre de contrats souscrits.</small>
+                                <p class="text-danger small mt-1" th:if="${#fields.hasErrors('buyQuantity')}" th:errors="*{buyQuantity}"></p>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit" class="btn py-2 fw-semibold text-dark shadow-sm" style="background-color: #4ade80; border-color: #4ade80;">
+                                    <i class="fa-solid fa-check me-1"></i> Valider et Enregistrer le Contrat
+                                </button>
+                                <a th:href="@{/trade/list}" class="btn btn-outline-secondary py-2 text-light">
+                                    <i class="fa-solid fa-xmark me-1"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <!-- On garde novalidate pour voir tes messages rouges Java -->
-                    <form th:action="@{/trade/validate}" th:object="${trade}" method="post">
 
-                        <!-- CHAMP : ACCOUNT -->
-                        <div class="mb-3">
-                            <label for="account" class="form-label font-weight-bold">Compte (Account)</label>
-                            <input type="text" th:field="*{account}" id="account" class="form-control" placeholder="Nom du compte">
-                            <!-- AJOUT : Affichage de l'erreur en rouge -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
-                        </div>
-
-                        <!-- CHAMP : TYPE -->
-                        <div class="mb-3">
-                            <label for="type" class="form-label font-weight-bold">Type</label>
-                            <input type="text" th:field="*{type}" id="type" class="form-control" placeholder="Ex: Cash">
-                            <!-- AJOUT : Affichage de l'erreur en rouge -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
-                        </div>
-
-                        <!-- CHAMP : QUANTITY -->
-                        <div class="mb-4">
-                            <label for="buyQuantity" class="form-label font-weight-bold">Quantité d'achat</label>
-                            <input type="number" step="0.01" th:field="*{buyQuantity}" id="buyQuantity" class="form-control" placeholder="0.00">
-                            <!-- AJOUT : Affichage de l'erreur en rouge -->
-                            <p class="text-danger" th:if="${#fields.hasErrors('buyQuantity')}" th:errors="*{buyQuantity}"></p>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success">Valider le Trade</button>
-                            <a th:href="@{/trade/list}" class="btn btn-outline-secondary">Annuler</a>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
