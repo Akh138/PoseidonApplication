@@ -124,6 +124,10 @@ J'ai effectué une refonte complète pour séparer chaque domaine métier dans s
 | **Inscription Trader** | Accessible directement via le lien "Créer un compte" | Mot de passe au choix |
 
 ---
+### 💡 Note d'Ingénierie sur le Seeding & la Persistance (`data.sql`)
+> Par défaut, en environnement de développement et d'évaluation, le microservice `user` réexécute son script d'initialisation (`data.sql`) à chaque démarrage avec l'instruction `DELETE FROM users;`.  
+> Ce choix garantit un environnement **idempotent et reproductible** pour tester la plateforme avec les comptes par défaut (`admin` / `user`).  
+> Pour activer une persistance définitive des nouveaux comptes créés sans remise à zéro au redémarrage des conteneurs, il suffit de retirer l'instruction `DELETE` et d'utiliser `INSERT IGNORE` sur les identifiants d'origine.
 
 ## 👨‍💻 Auteur & Note de Réalisation
 
